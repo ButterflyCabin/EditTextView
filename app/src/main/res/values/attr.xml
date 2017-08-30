@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="EditTextView">
-        <attr name="edv_ItemWidth" format="dimension"/>
-        <attr name="edv_ItemHeight" format="dimension"/>
-        <attr name="edv_ItemCount" format="integer"/>
-        <attr name="edv_ItemDivider" format="dimension"/>
-    </declare-styleable>
+    <attr name="edv_ItemWidth" format="dimension" />
+    <attr name="edv_ItemHeight" format="dimension" />
+    <attr name="edv_ItemCount" format="integer" />
+    <attr name="edv_ItemDivider" format="dimension" />
+    <attr name="edv_BackgroundColor" format="color" />
+    <attr name="edv_ContentRegionColor" format="color" />
+    <attr name="edv_ContentTextColor" format="color" />
+    <attr name="edv_ContentTextSize" format="dimension" />
+</declare-styleable>
 </resources>

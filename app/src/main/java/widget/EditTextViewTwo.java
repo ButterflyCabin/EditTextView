@@ -23,7 +23,7 @@ import widget.listener.OnCompleteListener;
  * @author yehu
  *         类说明：
  */
-public class EditTextView extends AppCompatEditText {
+public class EditTextViewTwo extends AppCompatEditText {
     private int mWidth;
     private int mHeight;
     private int mItemWidth = 20;  // 支持XML赋值
@@ -40,20 +40,21 @@ public class EditTextView extends AppCompatEditText {
     private int mContentRegionColor = Color.WHITE;  // 支持XML赋值
     private int mContentTextColor = Color.BLACK;  // 支持XML赋值
     private int mContentTextSize = 30;  // 支持XML赋值
+    private int mDividerSize = 10;  // 支持XML赋值
     private OnCompleteListener onCompleteListener;
 
 
-    public EditTextView(Context context) {
+    public EditTextViewTwo(Context context) {
         super(context);
         init(context, null);
     }
 
-    public EditTextView(Context context, AttributeSet attrs) {
+    public EditTextViewTwo(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public EditTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public EditTextViewTwo(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
@@ -78,11 +79,11 @@ public class EditTextView extends AppCompatEditText {
 
         mBackgroundPaint.setAntiAlias(true);
         mBackgroundPaint.setStyle(Paint.Style.FILL);
-        mBackgroundPaint.setStrokeWidth(5);
+        mBackgroundPaint.setStrokeWidth(6);
 
         mContentPaint.setAntiAlias(true);
         mContentPaint.setStyle(Paint.Style.FILL);
-        mContentPaint.setStrokeWidth(10);
+        mContentPaint.setStrokeWidth(mItemDivider / 2);
 
         mTextPaint.setAntiAlias(true);
         mTextPaint.setStyle(Paint.Style.FILL);
@@ -94,8 +95,8 @@ public class EditTextView extends AppCompatEditText {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 //        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        mWidth = mItemWidth * mItemCount + mItemDivider * (mItemCount + 1) + getPaddingLeft() + getPaddingRight();
-        mHeight = mItemHeight + getPaddingTop() + getPaddingBottom() + mItemDivider * 2;
+        mWidth = mItemWidth * mItemCount + mItemDivider * (mItemCount - 1) + getPaddingLeft() + getPaddingRight();
+        mHeight = mItemHeight + getPaddingTop() + getPaddingBottom();
         setMeasuredDimension(mWidth, mHeight);
     }
 
@@ -116,26 +117,26 @@ public class EditTextView extends AppCompatEditText {
         // 绘制背景
         mBackgroundPaint.setColor(mBackgroundColor);
         RectF rectF = new RectF(0, 0, mWidth, mHeight);
-        canvas.drawRoundRect(rectF, 5.0f, 5.0f, mBackgroundPaint);// 画背景
+        canvas.drawRoundRect(rectF, mHeight, mHeight, mBackgroundPaint);// 画背景
 
         // 绘制内容区域
         RectF itemRect;
         int left;
         int right;
-
+        mBackgroundPaint.setColor(Color.WHITE);
+        rectF = new RectF(0 + 6, 0 + 6, mWidth - 6, mHeight - 6);
+        canvas.drawRoundRect(rectF, mHeight-12, mHeight-12, mBackgroundPaint);//
         mContentPaint.setColor(mContentRegionColor);
         for (int i = 0; i < mItemCount; i++) {
-            Log.e("getPaddingLeft(): ", getPaddingLeft() + "");
-            Log.e("getPaddingRight(): ", getPaddingRight() + "");
-            Log.e("getPaddingTop(): ", getPaddingTop() + "");
-            Log.e("getPaddingBottom(): ", getPaddingBottom() + "");
-            left = getPaddingLeft() + mItemWidth * i + mItemDivider * (i + 1);
-//           right = getPaddingLeft() + mItemWidth * ( i+1) + mItemDivider * (i+1) ;
-            right = left + mItemWidth;
-            itemRect = new RectF(left, getPaddingTop() + mItemDivider, right, mHeight - getPaddingBottom() - mItemDivider);
-//            Log.e("ItemRect ", i + " : " + itemRect.left + " : " + itemRect.right + " : " + (itemRect.right - itemRect.left));
-            canvas.drawRoundRect(itemRect, 5.0f, 5.0f, mContentPaint);
+            left = (mWidth - getPaddingLeft() - getPaddingRight()) / mItemCount * i;
+            right = (mWidth - getPaddingLeft() - getPaddingRight()) / mItemCount * (i + 1);
+            itemRect = new RectF(left, getPaddingTop(), right, mHeight - getPaddingBottom());
+            Log.e("ItemRect ", i + " : " + itemRect.left + " : " + itemRect.right + " : " + (itemRect.right - itemRect.left));
             mItemRectF.put(i, itemRect);
+            if (i != mItemCount - 1) {
+                canvas.drawLine(right, getPaddingTop() + 3, right, mHeight - getPaddingBottom() - 3, mContentPaint);
+            }
+
         }
 
         // 绘制内容
@@ -149,8 +150,7 @@ public class EditTextView extends AppCompatEditText {
                 String text = mText[i] + "";
                 mTextPaint.getTextBounds(text.toString(), 0, text.toString().length(), bounds);
                 RectF rectF1 = mItemRectF.get(i);
-//                cx = (rectF1.left + rectF1.right) / 2 - bounds.centerX();
-                cx = (rectF1.left + rectF1.right) / 2 - bounds.centerX();
+                cx = (rectF1.left + rectF1.right) / 2 - bounds.centerX() - mDividerSize / 4;
                 canvas.drawText(text, cx, baseline, mTextPaint);
             }
         }

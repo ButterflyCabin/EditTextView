@@ -3,10 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#eeeeee"
     android:layout_height="match_parent"
     tools:context="com.yehu.edittextview.MainActivity">
 
+
     <widget.EditTextView
+        android:id="@+id/edv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="26dp"
@@ -14,10 +17,64 @@
         android:cursorVisible="false"
         app:edv_ItemWidth="52dp"
         app:edv_ItemHeight="52dp"
-        app:edv_ItemCount="6"
-        app:edv_ItemDivider="5dp"
+        app:edv_ItemCount="4"
+        android:maxLength="4"
+        app:edv_ContentTextSize="18sp"
+        app:edv_ContentRegionColor="#eeeeee"
+        app:edv_BackgroundColor="@color/colorAccent"
+        app:edv_ContentTextColor="@color/colorPrimary"
+        app:edv_ItemDivider="4dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="parent" />
+
+    <widget.EditTextViewOne
+        android:id="@+id/edv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:background="@null"
+        android:cursorVisible="false"
+        app:edv_ItemWidth="52dp"
+        app:edv_ItemHeight="52dp"
+        app:edv_ItemCount="4"
+        android:maxLength="4"
+        app:edv_ContentTextSize="18sp"
+        app:edv_BackgroundColor="#eeeeee"
+        app:edv_ContentRegionColor="@color/colorAccent"
+        app:edv_ContentTextColor="@color/colorPrimary"
+        app:edv_ItemDivider="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edv" />
+
+    <widget.EditTextViewTwo
+        android:id="@+id/edv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:background="@null"
+        android:cursorVisible="false"
+        app:edv_ItemWidth="52dp"
+        app:edv_ItemHeight="52dp"
+        app:edv_ItemCount="4"
+        android:maxLength="4"
+        app:edv_ContentTextSize="18sp"
+        app:edv_BackgroundColor="#aaaaaa"
+        app:edv_ContentRegionColor="#aaaaaa"
+        app:edv_ContentTextColor="@color/colorPrimary"
+        app:edv_ItemDivider="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edv1" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:text="Click Button"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/edv2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -23,7 +23,7 @@ import widget.listener.OnCompleteListener;
  * @author yehu
  *         类说明：
  */
-public class EditTextView extends AppCompatEditText {
+public class EditTextViewOne extends AppCompatEditText {
     private int mWidth;
     private int mHeight;
     private int mItemWidth = 20;  // 支持XML赋值
@@ -40,20 +40,21 @@ public class EditTextView extends AppCompatEditText {
     private int mContentRegionColor = Color.WHITE;  // 支持XML赋值
     private int mContentTextColor = Color.BLACK;  // 支持XML赋值
     private int mContentTextSize = 30;  // 支持XML赋值
+    private int mBorderSize = 10;  // 支持XML赋值
     private OnCompleteListener onCompleteListener;
 
 
-    public EditTextView(Context context) {
+    public EditTextViewOne(Context context) {
         super(context);
         init(context, null);
     }
 
-    public EditTextView(Context context, AttributeSet attrs) {
+    public EditTextViewOne(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs);
     }
 
-    public EditTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public EditTextViewOne(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
@@ -81,8 +82,8 @@ public class EditTextView extends AppCompatEditText {
         mBackgroundPaint.setStrokeWidth(5);
 
         mContentPaint.setAntiAlias(true);
-        mContentPaint.setStyle(Paint.Style.FILL);
-        mContentPaint.setStrokeWidth(10);
+        mContentPaint.setStyle(Paint.Style.STROKE);
+        mContentPaint.setStrokeWidth(mBorderSize/2);
 
         mTextPaint.setAntiAlias(true);
         mTextPaint.setStyle(Paint.Style.FILL);
@@ -93,9 +94,8 @@ public class EditTextView extends AppCompatEditText {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 //        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        mWidth = mItemWidth * mItemCount + mItemDivider * (mItemCount + 1) + getPaddingLeft() + getPaddingRight();
-        mHeight = mItemHeight + getPaddingTop() + getPaddingBottom() + mItemDivider * 2;
+        mWidth = mItemWidth * mItemCount + mItemDivider * (mItemCount - 1) + getPaddingLeft() + getPaddingRight();
+        mHeight = mItemHeight + getPaddingTop() + getPaddingBottom();
         setMeasuredDimension(mWidth, mHeight);
     }
 
@@ -129,11 +129,9 @@ public class EditTextView extends AppCompatEditText {
             Log.e("getPaddingRight(): ", getPaddingRight() + "");
             Log.e("getPaddingTop(): ", getPaddingTop() + "");
             Log.e("getPaddingBottom(): ", getPaddingBottom() + "");
-            left = getPaddingLeft() + mItemWidth * i + mItemDivider * (i + 1);
-//           right = getPaddingLeft() + mItemWidth * ( i+1) + mItemDivider * (i+1) ;
-            right = left + mItemWidth;
-            itemRect = new RectF(left, getPaddingTop() + mItemDivider, right, mHeight - getPaddingBottom() - mItemDivider);
-//            Log.e("ItemRect ", i + " : " + itemRect.left + " : " + itemRect.right + " : " + (itemRect.right - itemRect.left));
+            left = mBorderSize / 2 + getPaddingLeft() + mItemWidth * i + mItemDivider * i;
+            right = left + mItemWidth - mBorderSize;
+            itemRect = new RectF(left, mBorderSize / 2 + getPaddingTop(), right, mHeight - getPaddingBottom() - mBorderSize / 2);
             canvas.drawRoundRect(itemRect, 5.0f, 5.0f, mContentPaint);
             mItemRectF.put(i, itemRect);
         }
@@ -149,8 +147,7 @@ public class EditTextView extends AppCompatEditText {
                 String text = mText[i] + "";
                 mTextPaint.getTextBounds(text.toString(), 0, text.toString().length(), bounds);
                 RectF rectF1 = mItemRectF.get(i);
-//                cx = (rectF1.left + rectF1.right) / 2 - bounds.centerX();
-                cx = (rectF1.left + rectF1.right) / 2 - bounds.centerX();
+                cx = (rectF1.left + rectF1.right) / 2 - bounds.centerX() - mBorderSize/4;
                 canvas.drawText(text, cx, baseline, mTextPaint);
             }
         }
