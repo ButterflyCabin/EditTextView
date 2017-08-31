@@ -70,6 +70,7 @@ public class EditTextViewOne extends AppCompatEditText {
             mBackgroundColor = a.getColor(R.styleable.EditTextView_edv_BackgroundColor, mBackgroundColor);
             mContentRegionColor = a.getColor(R.styleable.EditTextView_edv_ContentRegionColor, mContentRegionColor);
             mContentTextColor = a.getColor(R.styleable.EditTextView_edv_ContentTextColor, mContentTextColor);
+            mBorderSize = a.getDimensionPixelOffset(R.styleable.EditTextView_edv_BorderSize, mBorderSize);
             a.recycle();
         }
         setBackgroundDrawable(null);
@@ -83,7 +84,7 @@ public class EditTextViewOne extends AppCompatEditText {
 
         mContentPaint.setAntiAlias(true);
         mContentPaint.setStyle(Paint.Style.STROKE);
-        mContentPaint.setStrokeWidth(mBorderSize/2);
+        mContentPaint.setStrokeWidth(mBorderSize);
 
         mTextPaint.setAntiAlias(true);
         mTextPaint.setStyle(Paint.Style.FILL);
@@ -125,10 +126,6 @@ public class EditTextViewOne extends AppCompatEditText {
 
         mContentPaint.setColor(mContentRegionColor);
         for (int i = 0; i < mItemCount; i++) {
-            Log.e("getPaddingLeft(): ", getPaddingLeft() + "");
-            Log.e("getPaddingRight(): ", getPaddingRight() + "");
-            Log.e("getPaddingTop(): ", getPaddingTop() + "");
-            Log.e("getPaddingBottom(): ", getPaddingBottom() + "");
             left = mBorderSize / 2 + getPaddingLeft() + mItemWidth * i + mItemDivider * i;
             right = left + mItemWidth - mBorderSize;
             itemRect = new RectF(left, mBorderSize / 2 + getPaddingTop(), right, mHeight - getPaddingBottom() - mBorderSize / 2);

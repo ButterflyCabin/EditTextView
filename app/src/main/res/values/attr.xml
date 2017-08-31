@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="EditTextView">
-    <attr name="edv_ItemWidth" format="dimension" />
-    <attr name="edv_ItemHeight" format="dimension" />
-    <attr name="edv_ItemCount" format="integer" />
-    <attr name="edv_ItemDivider" format="dimension" />
-    <attr name="edv_BackgroundColor" format="color" />
-    <attr name="edv_ContentRegionColor" format="color" />
-    <attr name="edv_ContentTextColor" format="color" />
-    <attr name="edv_ContentTextSize" format="dimension" />
-</declare-styleable>
+        <attr name="edv_ItemWidth" format="dimension" />
+        <attr name="edv_ItemHeight" format="dimension" />
+        <attr name="edv_ItemCount" format="integer" />
+        <attr name="edv_ItemDivider" format="dimension" />
+        <attr name="edv_BackgroundColor" format="color" />
+        <attr name="edv_BorderColor" format="color" />
+        <attr name="edv_ContentRegionColor" format="color" />
+        <attr name="edv_ContentTextColor" format="color" />
+        <attr name="edv_ContentTextSize" format="dimension" />
+        <attr name="edv_BorderSize" format="dimension" />
+        <attr name="edv_BorderRadius" format="dimension" />
+        <attr name="edv_DividerSize" format="dimension" />
+        <attr name="edv_password" format="boolean" />
+        <attr name="edv_Type" format="enum" >
+            <enum name="A" value="0"/>
+            <enum name="B" value="1"/>
+            <enum name="C" value="2"/>
+            <enum name="D" value="3"/>
+        </attr>
+    </declare-styleable>
 </resources>
