@@ -178,12 +178,12 @@ public class EditTextView extends AppCompatEditText {
         // 绘制内容
         switch (mType) {
             case TYPE_A:
-                drawBackgroud(canvas,mBackgroundColor,mBackgroundPaint);
+                drawBackground(canvas,mBackgroundColor,mBackgroundPaint);
                 drawContentRegion(canvas,mBorderSize,mContentPaint,mContentRegionColor);
                 drawContentText(canvas, mContentTextColor, mTextPaint, false);
                 break;
             case TYPE_B:
-                drawBackgroud(canvas,mBackgroundColor,mBackgroundPaint);
+                drawBackground(canvas,mBackgroundColor,mBackgroundPaint);
                 drawContentRegion(canvas,mBorderSize,mContentPaint,mContentRegionColor);
                 drawContentText(canvas, mContentTextColor, mTextPaint, false);
                 break;
@@ -195,7 +195,7 @@ public class EditTextView extends AppCompatEditText {
         }
     }
 
-    private void drawBackgroud(Canvas canvas,int backgroundColor,Paint backgroundPaint){
+    private void drawBackground(Canvas canvas,int backgroundColor,Paint backgroundPaint){
         mBackgroundPaint.setColor(backgroundColor);
         RectF rectF = new RectF(0, 0, mWidth, mHeight);
         canvas.drawRoundRect(rectF, mBorderRadius, mBorderRadius, backgroundPaint);// 画背景
