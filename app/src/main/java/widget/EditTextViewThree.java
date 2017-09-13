@@ -10,6 +10,7 @@ import android.graphics.RectF;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.InputFilter;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 
 import com.yehu.edittextview.R;
@@ -62,14 +63,14 @@ public class EditTextViewThree extends AppCompatEditText {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.EditTextView);
             mItemWidth = a.getDimensionPixelOffset(R.styleable.EditTextView_edv_ItemWidth, mItemWidth);
             mItemHeight = a.getDimensionPixelOffset(R.styleable.EditTextView_edv_ItemHeight, mItemHeight);
-            mTextCount = a.getInt(R.styleable.EditTextView_edv_ItemCount,mTextCount);
+            mTextCount = a.getInt(R.styleable.EditTextView_edv_ItemCount, mTextCount);
             mTextSize = a.getDimensionPixelOffset(R.styleable.EditTextView_edv_ContentTextSize, mTextSize);
             mBorderSize = a.getDimensionPixelOffset(R.styleable.EditTextView_edv_BorderSize, mBorderSize);
             mDividerSize = a.getDimensionPixelOffset(R.styleable.EditTextView_edv_DividerSize, mDividerSize);
             mBackgroundColor = a.getColor(R.styleable.EditTextView_edv_BackgroundColor, mBackgroundColor);
             mBorderColor = a.getColor(R.styleable.EditTextView_edv_BorderColor, mBorderColor);
             mTextColor = a.getColor(R.styleable.EditTextView_edv_ContentTextColor, mTextColor);
-            isPassword  = a.getBoolean(R.styleable.EditTextView_edv_password,isPassword);
+            isPassword = a.getBoolean(R.styleable.EditTextView_edv_password, isPassword);
             a.recycle();
         }
         setTextColor(Color.TRANSPARENT);
@@ -91,8 +92,21 @@ public class EditTextViewThree extends AppCompatEditText {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 //        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        mWidth = mItemWidth * mTextCount + mDividerSize * (mTextCount + 1) + getPaddingLeft() + getPaddingRight();
-        mHeight = mItemHeight + getPaddingTop() + getPaddingBottom();
+        int mode = MeasureSpec.getMode(widthMeasureSpec);
+        if (mode == MeasureSpec.EXACTLY) {// match_parent fill_parent 50dp
+            mWidth = MeasureSpec.getSize(widthMeasureSpec);
+            mItemWidth = (mWidth - (mDividerSize * (mTextCount - 1))) / mTextCount;
+        } else {
+            mWidth = mItemWidth * mTextCount + mDividerSize * (mTextCount + 1) + getPaddingLeft() + getPaddingRight();
+        }
+        mode = MeasureSpec.getMode(heightMeasureSpec);
+        if (mode == MeasureSpec.EXACTLY) {// match_parent fill_parent 50dp
+            mHeight = MeasureSpec.getSize(heightMeasureSpec);
+            mItemHeight = mHeight - getPaddingTop() - getPaddingBottom();
+        } else {
+            mHeight = mItemHeight + getPaddingTop() + getPaddingBottom();
+        }
+
         setMeasuredDimension(mWidth, mHeight);
     }
 
@@ -111,20 +125,20 @@ public class EditTextViewThree extends AppCompatEditText {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         // 绘制背景
-        drawBackground(canvas,mBackgroundColor,mBackgroundPaint);
+        drawBackground(canvas, mBackgroundColor, mBackgroundPaint);
         // 绘制边框
-        drawContentBorder(canvas,mBorderSize,mBorderPaint,mBorderColor);
+        drawContentBorder(canvas, mBorderSize, mBorderPaint, mBorderColor);
         // 绘制内容
         drawContentText(canvas, mTextColor, mTextPaint, isPassword);
     }
 
-    private void drawBackground(Canvas canvas,int backgroundColor,Paint backgroundPaint){
+    private void drawBackground(Canvas canvas, int backgroundColor, Paint backgroundPaint) {
         mBackgroundPaint.setColor(backgroundColor);
         RectF rectF = new RectF(0, 0, mWidth, mHeight);
         canvas.drawRoundRect(rectF, 0, 0, backgroundPaint);// 画背景
     }
 
-    private void drawContentBorder(Canvas canvas,int mBorderSize, Paint mContentPaint,int mContentRegionColor){
+    private void drawContentBorder(Canvas canvas, int mBorderSize, Paint mContentPaint, int mContentRegionColor) {
         RectF itemRect;
         int left;
         int right;
@@ -134,23 +148,23 @@ public class EditTextViewThree extends AppCompatEditText {
             right = left + mItemWidth;
             itemRect = new RectF(left, getPaddingTop(), right, mHeight - getPaddingBottom() - mBorderSize);
             canvas.drawLine(left, mHeight - getPaddingBottom() - mBorderSize, right, mHeight - getPaddingBottom() - mBorderSize, mContentPaint);
-            mItemRectF.put(i,itemRect);
+            mItemRectF.put(i, itemRect);
         }
     }
 
-    private void drawContentText(Canvas canvas,int mContentTextColor,Paint mTextPaint, boolean isPassword){
+    private void drawContentText(Canvas canvas, int mContentTextColor, Paint mTextPaint, boolean isPassword) {
         float cx;
         Rect bounds = new Rect();
         mTextPaint.setColor(mContentTextColor);
         Paint.FontMetricsInt fontMetrics = mTextPaint.getFontMetricsInt();
-        int baseline = isPassword ? 0:(mHeight - mBorderSize - getPaddingBottom() - getPaddingTop() - fontMetrics.bottom - fontMetrics.top) / 2;
+        int baseline = isPassword ? mHeight/2 : (mHeight - mBorderSize - getPaddingBottom() - getPaddingTop() - fontMetrics.bottom - fontMetrics.top) / 2;
         if (mTextLength <= mTextCount) {
             String text;
             for (int i = 0; i < mTextLength; i++) {
                 RectF rectF1 = mItemRectF.get(i);
-                if (isPassword){
+                if (isPassword) {
                     text = "*";
-                }else {
+                } else {
                     text = mText[i] + "";
                 }
                 mTextPaint.getTextBounds(text.toString(), 0, text.toString().length(), bounds);
